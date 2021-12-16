@@ -1,1 +1,126 @@
-Hello world
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Binary Calculator</title>
+    <style type="text/css">
+        .wrap {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        .wrap>h1 {
+            font-size: 60px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        #res {
+            background-color: #333;
+            height: 80px;
+            font-size: 70px;
+            line-height: 80px;
+            padding: 0 5px;
+            color: #fff;
+        }
+
+        #btns {
+            width: 494px;
+            float: left;
+            border: 3px solid #333;
+        }
+
+        #btns>button {
+            width: 25%;
+            height: 80px;
+            font-size: 50px;
+            margin: 0;
+            float: left;
+            border: 1px solid #333;
+            background-color: #c9cacd;
+            color: #333;
+        }
+
+        #btn0,
+        #btn1 {
+            background-color: #bbbec0 !important;
+        }
+
+        #btnClr {
+            background-color: red !important;
+        }
+
+        #btnEql {
+            background-color: #319c16 !important;
+        }
+
+        #btnClr,
+        #btnEql {
+            color: #fff !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>Binary Calculator</h1>
+        <div id="res"></div>
+        <div id="btns">
+            <button id="btn0" class="btn">0</button>
+            <button id="btn1" class="btn">1</button>
+            <button id="btnClr" class="btn">C</button>
+            <button id="btnEql" class="btn">=</button>
+            <button id="btnSum" class="btn">+</button>
+            <button id="btnSub" class="btn">-</button>
+            <button id="btnMul" class="btn">*</button>
+            <button id="btnDiv" class="btn">/</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var res = document.getElementById('res');
+        var ops = ['+','-','*','/'];
+        
+        var handleInputControl = (act) => {
+            var input = res.innerHTML;
+            var isMathSign = ops.indexOf(act) !== -1;
+
+            if (input === '' && isMathSign) {
+                return;
+            }
+
+            var sign = input[input.length - 1];
+            if (isMathSign && ops.indexOf(sign) !== -1) {
+                res.innerHTML = input.substring(0, input.length - 1) + act;
+                return;
+            }
+
+            res.innerHTML += act;
+        }
+
+        var btnClick = (e) => {
+            var btn = e.target || e.srcElement;
+            var act = btn.innerHTML;
+            
+            switch (act) {
+                case 'C':
+                    res.innerHTML = '';
+                    break;
+                case '=':
+                    var exp = res.innerHTML;
+                    exp = exp.replace(/(\d+)/g, (match) => parseInt(match, 2));
+                    res.innerHTML = eval(exp).toString(2);
+                    break;
+                default:
+                    handleInputControl(act);
+            }
+        }
+
+        var btns = document.getElementsByTagName('button');
+        for (var btn of btns) {
+            btn.onclick = btnClick;
+        }
+    </script>
+</body>
+
+</html>
